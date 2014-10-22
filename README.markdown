@@ -3,6 +3,8 @@ The list builder gives you a nice input widget for the users to enter a list of 
 - Editing an individual entry
 - Deleting an individual entry
 - Validating and highlighting an invalid entry
+
+
 ![alt tag](https://raw.github.com/henry0sue/ListBuilder/master/screenshot/ListBuilder.png)
 
 ## Usage
