@@ -6,6 +6,7 @@ The list builder gives you a nice input widget for the users to enter a list of 
 
 
 ![alt tag](https://raw.github.com/henry0sue/ListBuilder/master/screenshot/ListBuilder.png)
+The default delimiter that causes an entry to be added to the list is comma, but it can be changed.
 
 ## Usage
 Include the following block of code to use the widget
