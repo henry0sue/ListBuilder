@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>List Builder demo page</title>
+    <link rel="stylesheet" href="styles/list-builder.css">
+</head>
+<body>
+<div>
+    <form>
+        <label>Enter a list of email addresses: </label>
+        <div id="list-value-input" style="width:400px;"></div>
+        <input type="submit" value="Submit">
+    </form>
+</div>
+<script src="http://yui.yahooapis.com/3.18.1/build/yui/yui-min.js"></script>
+<script>
+    YUI(
+            {
+                debug: true,
+                filter: 'raw',
+                groups: {
+                    localjs: {
+                        base: "src/",
+                        modules: {
+                            "list-builder": {
+                                path: 'list-builder.js',
+                                requires: [
+                                    'base',
+                                    'node',
+                                    'widget',
+                                    "event-key"
+                                ]
+                            }
+
+                        }
+                    }
+                }
+            }
+    ).use(
+            'list-builder',
+            function(Y){
+                var listInput = new Y.Widgets.ListBuilder(
+                        {
+                            validatorFn: function(email){
+                                var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+                                return re.test(email);
+                            }
+                        }
+                );
+                listInput.on(
+                        'itemsChange',
+                        function(evt){
+                            console.log(evt.newVal);
+                        }
+                );
+
+                listInput.on(
+                        'validChange',
+                        function(evt){
+                            console.log(evt.newVal);
+                        }
+                );
+                listInput.render(Y.one('#list-value-input'));
+
+            }
+    );
+</script>
+</body>
+</html>
