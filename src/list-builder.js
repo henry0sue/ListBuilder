@@ -57,27 +57,32 @@ YUI.add(
                     );
 
                     this.get('contentBox').delegate(
-                        'keypress',
-                        function(evt){
-                            var keyCode = evt.keyCode;
-                            //188 is the key code for ',' (comma)
-                            if(String.fromCharCode(keyCode) == this.get('delimiter')){
+                        'valuechange',
+                        function (evt) {
+                            var lastChar = evt.newVal.charAt(evt.newVal.length - 1);
+                            if(lastChar == this.get('delimiter')){
                                 if(this._inputField === evt.target) {
-                                    var value = this._inputField.getDOMNode().value;
-                                    if(value && value.trim() != '') {
-                                        this._validateAndInsert(value, null, true);
-                                    }
+                                    var items = evt.newVal.split(this.get('delimiter'));
+                                    items.forEach(
+                                        function(item){
+                                            if(item.trim() != ''){
+                                                this._validateAndInsert(item, null, true);
+                                            }
+                                        },
+                                        this
+                                    );
                                 }
                                 else{
                                     this._finishEditItem(evt);
                                 }
-                                evt.preventDefault();
-                                evt.stopPropagation();
+
                             }
+
                         },
                         'li input',
                         this
                     );
+
 
                     this.get('contentBox').delegate(
                         'click',
@@ -136,6 +141,7 @@ YUI.add(
                     var liNode = item.get('parentNode');
                     liNode.empty();
                     liNode.removeClass('list-item');
+                    liNode.removeClass('invalid');
                     liNode.appendChild(inputNode);
                     inputNode.focus();
                 },
@@ -155,7 +161,10 @@ YUI.add(
 
                 _finishEditItem: function(evt){
                     var inputNode = evt.target;
-                    var inputValue = inputNode.getDOMNode().value;
+                    var inputValue = inputNode.get('value');
+                    if(inputValue.charAt(inputValue.length - 1) == this.get('delimiter')){
+                        inputValue = inputValue.substr(0, inputValue.length - 1);
+                    }
                     var liNode = inputNode.get('parentNode');
                     if(inputValue.trim() == ''){
                         _deleteItem(liNode);
@@ -188,8 +197,9 @@ YUI.add(
 
                     if(validator &&  validator.apply(this, [value]) !== true){
                         liNode.addClass("invalid");
-                        this.set('valid', false);
                     }
+
+                    this._refreshValidState();
 
                 },
 
@@ -228,7 +238,7 @@ YUI.add(
             'base',
             'node',
             'widget',
-            "event-key"
+            "event-valuechange"
         ]
     }
 );

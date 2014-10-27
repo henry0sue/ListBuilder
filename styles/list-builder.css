@@ -68,7 +68,9 @@
 }
 
 .list-container .invalid{
-    color: #bb0000;
+    color: #fff;
+    background-color: #bb0000;
+    background-image: none;
 }
 
 .list-container li{
@@ -96,6 +98,10 @@
     font-size: 8px;
     color: #666;
     cursor: pointer;
+}
+
+.list-item.invalid .icon-close{
+    color: #fff;
 }
 
 .list-item .icon-close:hover{
